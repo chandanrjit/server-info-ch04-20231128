@@ -119,7 +119,7 @@ jobs:
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-dev \
-            -Dcloudhub.target="$CH2_TARGET" \
+            -Dcloudhub.target="Cloudhub-US-West-1" \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.vCores=0.1 \
             -Dcloudhub.businessGroup="Cloud01Group04\\Cloud04Group04" \
@@ -180,7 +180,7 @@ jobs:
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-test \
-            -Dcloudhub.target="$CH2_TARGET" \
+            -Dcloudhub.target="Cloudhub-US-West-1" \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.vCores=0.1 \
             -Dcloudhub.businessGroup="Cloud01Group04\\Cloud04Group04" \
@@ -241,7 +241,7 @@ jobs:
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-demo-2 \
-            -Dcloudhub.target="$CH2_TARGET" \
+            -Dcloudhub.target="Cloudhub-US-West-1" \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.vCores=0.1 \
             -Dcloudhub.businessGroup="Cloud01Group04\\Cloud04Group04" \
