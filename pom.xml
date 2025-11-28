@@ -48,6 +48,7 @@
                         <workers>${cloudhub.replicas}</workers>
                         <workerType>${cloudhub.workerType}</workerType>
                         <objectStoreV2>true</objectStoreV2>
+                        <businessGroup>${cloudhub.businessGroup}</businessGroup>
                     </cloudHubDeployment>
                 </configuration>
                 <dependencies>
