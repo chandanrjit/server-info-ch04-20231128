@@ -121,7 +121,6 @@ jobs:
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=$ANYPOINT_ORG_ID \
             -DskipTests
 
   deploy-test:
@@ -181,7 +180,6 @@ jobs:
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=$ANYPOINT_ORG_ID \
             -DskipTests
 
   deploy-prod:
@@ -241,7 +239,6 @@ jobs:
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=$ANYPOINT_ORG_ID \
             -DskipTests
 
       - name: Notify deployment status
