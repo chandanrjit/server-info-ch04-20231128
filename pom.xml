@@ -46,7 +46,7 @@
                         <environment>${cloudhub.environment}</environment>
                         <region>${cloudhub.region}</region>
                         <workers>${cloudhub.replicas}</workers>
-                        <workerSize>${cloudhub.workerSize}</workerSize>
+                        <workerType>${cloudhub.workerType}</workerType>
                         <objectStoreV2>true</objectStoreV2>
                         <businessGroup>${cloudhub.businessGroup}</businessGroup>
                     </cloudHubDeployment>
