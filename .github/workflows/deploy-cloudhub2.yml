@@ -114,14 +114,13 @@ jobs:
         run: |
           mvn deploy -DmuleDeploy \
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
-            -Danypoint.platform.client_id=$ANYPOINT_CLIENT_ID \
-            -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_SECRET \
+            -DconnectedApp.clientId=$ANYPOINT_CLIENT_ID \
+            -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=$ANYPOINT_ENV_ID \
             -Dcloudhub.applicationName=server-info-dev \
-            -Dcloudhub.muleVersion=${{ env.MULE_VERSION }} \
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
-            -Dcloudhub.vCores=0.1 \
+            -Dcloudhub.workerSize=0.1 \
             -Dcloudhub.businessGroup=$ANYPOINT_ORG_ID \
             -DskipTests
 
@@ -175,14 +174,13 @@ jobs:
         run: |
           mvn deploy -DmuleDeploy \
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
-            -Danypoint.platform.client_id=$ANYPOINT_CLIENT_ID \
-            -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_SECRET \
+            -DconnectedApp.clientId=$ANYPOINT_CLIENT_ID \
+            -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=$ANYPOINT_ENV_ID \
             -Dcloudhub.applicationName=server-info-test \
-            -Dcloudhub.muleVersion=${{ env.MULE_VERSION }} \
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
-            -Dcloudhub.vCores=0.2 \
+            -Dcloudhub.workerSize=0.2 \
             -Dcloudhub.businessGroup=$ANYPOINT_ORG_ID \
             -DskipTests
 
@@ -236,14 +234,13 @@ jobs:
         run: |
           mvn deploy -DmuleDeploy \
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
-            -Danypoint.platform.client_id=$ANYPOINT_CLIENT_ID \
-            -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_SECRET \
+            -DconnectedApp.clientId=$ANYPOINT_CLIENT_ID \
+            -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=$ANYPOINT_ENV_ID \
             -Dcloudhub.applicationName=server-info-demo-2 \
-            -Dcloudhub.muleVersion=${{ env.MULE_VERSION }} \
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
-            -Dcloudhub.vCores=0.1 \
+            -Dcloudhub.workerSize=0.1 \
             -Dcloudhub.businessGroup=$ANYPOINT_ORG_ID \
             -DskipTests
 
