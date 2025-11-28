@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - develop
+      - development
   workflow_dispatch:
     inputs:
       environment:
@@ -63,7 +63,7 @@ jobs:
     name: Deploy to DEV
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/develop' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'dev')
+    if: github.ref == 'refs/heads/development' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'dev')
     environment: 
       name: development
       url: https://server-info-dev.us-w2.cloudhub.io
