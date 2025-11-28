@@ -39,16 +39,18 @@
                     <cloudhub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
                         <muleVersion>${app.runtime}</muleVersion>
-                        <username>${anypoint.platform.username}</username>
-                        <password>${anypoint.platform.password}</password>
+                        <connectedAppClientId>${connectedApp.clientId}</connectedAppClientId>
+                        <connectedAppClientSecret>${connectedApp.clientSecret}</connectedAppClientSecret>
+                        <connectedAppGrantType>client_credentials</connectedAppGrantType>
                         <applicationName>${cloudhub.applicationName}</applicationName>
                         <environment>${cloudhub.environment}</environment>
                         <target>${cloudhub.target}</target>
-                        <provider>${cloudhub.provider}</provider>
+                        <provider>MC</provider>
                         <replicas>${cloudhub.replicas}</replicas>
                         <vCores>${cloudhub.vCores}</vCores>
                         <deploymentSettings>
                             <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+                            <updateStrategy>rolling</updateStrategy>
                         </deploymentSettings>
                         <businessGroup>${cloudhub.businessGroup}</businessGroup>
                     </cloudhub2Deployment>

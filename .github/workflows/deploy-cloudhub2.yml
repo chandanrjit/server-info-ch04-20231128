@@ -111,6 +111,7 @@ jobs:
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_DEV }}
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
           ANYPOINT_ENV_ID: ${{ secrets.ANYPOINT_ENV_ID_DEV }}
+          CH2_TARGET: ${{ secrets.CH2_TARGET }}
         run: |
           mvn deploy -DmuleDeploy \
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
@@ -118,10 +119,10 @@ jobs:
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-dev \
-            -Dcloudhub.region=us-west-2 \
+            -Dcloudhub.target="$CH2_TARGET" \
             -Dcloudhub.replicas=1 \
-            -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=Cloud01Group04\\Cloud04Group04 \
+            -Dcloudhub.vCores=0.1 \
+            -Dcloudhub.businessGroup="Cloud01Group04\\Cloud04Group04" \
             -DskipTests
 
   deploy-test:
@@ -171,6 +172,7 @@ jobs:
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_TEST }}
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
           ANYPOINT_ENV_ID: ${{ secrets.ANYPOINT_ENV_ID_TEST }}
+          CH2_TARGET: ${{ secrets.CH2_TARGET }}
         run: |
           mvn deploy -DmuleDeploy \
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
@@ -178,10 +180,10 @@ jobs:
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-test \
-            -Dcloudhub.region=us-west-2 \
+            -Dcloudhub.target="$CH2_TARGET" \
             -Dcloudhub.replicas=1 \
-            -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=Cloud01Group04\\Cloud04Group04 \
+            -Dcloudhub.vCores=0.1 \
+            -Dcloudhub.businessGroup="Cloud01Group04\\Cloud04Group04" \
             -DskipTests
 
   deploy-prod:
@@ -231,6 +233,7 @@ jobs:
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_PROD }}
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
           ANYPOINT_ENV_ID: ${{ secrets.ANYPOINT_ENV_ID_PROD }}
+          CH2_TARGET: ${{ secrets.CH2_TARGET }}
         run: |
           mvn deploy -DmuleDeploy \
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
@@ -238,10 +241,10 @@ jobs:
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-demo-2 \
-            -Dcloudhub.region=us-west-2 \
+            -Dcloudhub.target="$CH2_TARGET" \
             -Dcloudhub.replicas=1 \
-            -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=Cloud01Group04\\Cloud04Group04 \
+            -Dcloudhub.vCores=0.1 \
+            -Dcloudhub.businessGroup="Cloud01Group04\\Cloud04Group04" \
             -DskipTests
 
       - name: Notify deployment status
