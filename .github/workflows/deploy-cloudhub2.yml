@@ -121,7 +121,7 @@ jobs:
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=Cloud04Group04 \
+            -Dcloudhub.businessGroup=Cloud01Group04\\Cloud04Group04 \
             -DskipTests
 
   deploy-test:
@@ -181,7 +181,7 @@ jobs:
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=Cloud04Group04 \
+            -Dcloudhub.businessGroup=Cloud01Group04\\Cloud04Group04 \
             -DskipTests
 
   deploy-prod:
@@ -241,7 +241,7 @@ jobs:
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
             -Dcloudhub.workerType=MICRO \
-            -Dcloudhub.businessGroup=Cloud04Group04 \
+            -Dcloudhub.businessGroup=Cloud01Group04\\Cloud04Group04 \
             -DskipTests
 
       - name: Notify deployment status
