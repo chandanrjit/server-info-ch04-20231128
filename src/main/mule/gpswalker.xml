@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  MuleSoft Training - Anypoint Platform Operations: CloudHub
+  %%
+  Copyright (C) 2015 - 2021 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  %%
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+  #L%
+  -->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    <configuration-properties doc:name="Configuration properties" file="properties.yaml"/>
+    <os:object-store name="Objecstore_coordinates" doc:name="Object store" persistent="false"/>
+    <flow name="updateCoordinateFlow">
+        <scheduler doc:name="Scheduler">
+            <scheduling-strategy>
+				<cron expression="0 0/15 * * * ? *" />
+            
+</scheduling-strategy>
+        </scheduler>
+        <try doc:name="Try - Retrieve angle or create a new random one">
+            <set-variable value="#[import java!utilities::Calc --- randomInt(360) ]" doc:name="Set angle var" variableName="angle"/>
+            <os:store doc:name="Store" key="angle" objectStore="Objecstore_coordinates" failIfPresent="true" failOnNullValue="false">
+                <os:value><![CDATA[#[vars.angle]]]></os:value>
+            </os:store>
+            <try doc:name="Try">
+                <os:store doc:name="Store" key="coordinatesArray" failIfPresent="true" failOnNullValue="false">
+                    <os:value><![CDATA[#[ [] ]]]></os:value>
+                </os:store>
+                <logger level="DEBUG" doc:name="Logger" message="#['coordinatesArray reset to []  ']" category="com.mulesoft.training.gpswalker"/>
+                <error-handler>
+                    <on-error-continue enableNotifications="false" logException="false" doc:name="On Error Continue">
+                        <os:retrieve doc:name="ObjectStore: Get angle" key="initCoordinatesArray" objectStore="Objecstore_coordinates" target="coordinatesArray">
+                            <os:default-value><![CDATA[#[ [] ]]]></os:default-value>
+                        </os:retrieve>
+                        <logger level="DEBUG" doc:name="Logger" message="#['coordinatesArray is already in the object store: ' ++ write(vars.coordinatesArray, 'application/json')]" category="com.mulesoft.training.gpswalker"/>
+                    </on-error-continue>
+                </error-handler>
+            </try>
+            <logger level="INFO" doc:name="Logger" message="#['New direction angle ' ++ vars.angle ++ ' for the Mule app was stored in the object store: ']" category="com.mulesoft.training.gpswalker"/>
+            <error-handler>
+                <on-error-continue enableNotifications="false" logException="false" doc:name="On Error Continue">
+                    <os:retrieve doc:name="ObjectStore: Get angle" key="angle" target="angle" objectStore="Objecstore_coordinates">
+                        <os:default-value><![CDATA[#[vars.angle]]]></os:default-value>
+                    </os:retrieve>
+                    <logger level="DEBUG" doc:name="Logger" message="#['Angle ' ++ vars.angle ++ ' already exists in Object Store, so it is not being updated ']" category="com.mulesoft.training.gpswalker"/>
+                </on-error-continue>
+            </error-handler>
+        </try>
+        <os:retrieve doc:name="ObjectStore: Get current coordinate" key="coordinate" objectStore="Objecstore_coordinates" target="currentCoordinates">
+            <os:default-value><![CDATA[#[{latitude: p('gps.defaultLat') as Number, longitude: p('gps.defaultLong') as Number}]]]></os:default-value>
+        </os:retrieve>
+        <set-variable value="#[randomInt(360) - 180]" doc:name="Set randAngle var" variableName="randAngle"/>
+        <ee:transform doc:name="Update coordinate with random step">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                import java!utilities::Calc
+                import java!java::lang::Math
+
+                output application/java
+
+                var scale = 0.002
+
+                var randStepScale = 0.5
+
+                //var randAngle = randomInt(360) - 180  
+                ---
+                {    
+                    randAngle: vars.randAngle,
+                    latitude: vars.currentCoordinates.latitude  as Number + scale * ( (Math::sin(Math::toRadians(vars.angle)) as Number) + randStepScale * Math::sin(Math::toRadians(vars.randAngle))  ),
+                    longitude: vars.currentCoordinates.longitude as Number + scale * ( Math::cos(Math::toRadians(vars.angle)) + randStepScale * Math::cos(Math::toRadians(vars.randAngle)) )
+                }
+                ]]></ee:set-payload>
+            </ee:message>
+            <ee:variables/>
+        </ee:transform>
+        <try doc:name="Try">
+            <os:store doc:name="ObjectStore: Store new coordinate" key="coordinate" objectStore="Objecstore_coordinates" failOnNullValue="false"/>
+            <error-handler>
+                <on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue">
+                    <logger level="INFO" doc:name="Logger" message="Could not store new coordinate in object store"/>
+                </on-error-continue>
+            </error-handler>
+        </try>
+    </flow>
+    <flow name="loadIndexFlow">
+        <http:listener doc:name="GET ${gps.url} " path="${gps.url}" config-ref="HTTP_Listener_config"/>
+        <parse-template doc:name="Parse docroot/gpswalker.html" location="docroot/gpswalker.html"/>
+    </flow>
+    <flow name="coordinateFlow">
+        <http:listener doc:name="GET /coordinate" path="/coordinate" config-ref="HTTP_Listener_config">
+            <http:response>
+                <http:body><![CDATA[#[output application/json --- payload]]]></http:body>
+            </http:response>
+        </http:listener>
+        <os:retrieve doc:name="ObjectStore: Get coordinate" key="coordinate" objectStore="Objecstore_coordinates">
+            <os:default-value><![CDATA[#[{latitude: p('gps.defaultLat') as Number, longitude: p('gps.defaultLong') as Number}]]]></os:default-value>
+        </os:retrieve>
+    </flow>
+</mule>

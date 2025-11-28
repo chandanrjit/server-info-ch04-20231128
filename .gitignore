@@ -44,3 +44,4 @@ dependency-reduced-pom.xml
 *.rar
 
 .fake
+.tooling-project

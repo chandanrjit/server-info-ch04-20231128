@@ -1,0 +1,27 @@
+###
+# #%L
+# MuleSoft Training - Anypoint Platform Operations: CloudHub
+# %%
+# Copyright (C) 2015 - 2021 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+# %%
+# The software in this package is published under the terms of the
+# Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+# a copy of which has been included with this distribution in the LICENSE.txt file.
+# #L%
+###
+# http.port is automatically proxied on CloudHub to port 80
+# Port 8081 is also automatically proxied on CloudHub to port 80
+http.port: "18090"
+https.port: "18433"
+
+gps:
+  url: "services/gps"
+  defaultLat: "47.3667"
+  defaultLong: "8.55"
+
+#This port will not be proxied by CloudHub
+my.http.port: "18099"
+
+location: "San Francisco"
+
+start.path: "/start"

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  MuleSoft Training - Anypoint Platform Operations: CloudHub
+  %%
+  Copyright (C) 2015 - 2021 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  %%
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+  #L%
+  -->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config">
+        <http:listener-connection host="0.0.0.0" port="${http.port}"/>
+    </http:listener-config>
+    <flow name="initRandAngle">
+        <scheduler doc:name="Scheduler">
+            <scheduling-strategy>
+                <fixed-frequency frequency="60" timeUnit="SECONDS"/>
+            </scheduling-strategy>
+        </scheduler>
+        <ee:transform doc:name="Transform Message">
+            <ee:message/>
+            <ee:variables>
+                <ee:set-variable variableName="randAngle"><![CDATA[%dw 2.0
+                output application/json
+                ---
+                randomInt(360) as String {format: "#,###"}]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <os:store doc:name="Store" key="randAngle">
+            <os:value><![CDATA[#[vars.randAngle as String]]]></os:value>
+        </os:store>
+        <os:retrieve doc:name="Retrieve" key="randAngle">
+            <os:default-value><![CDATA["0"]]></os:default-value>
+        </os:retrieve>
+        <logger level="DEBUG" doc:name="Logger" message="#['New random angle created: ' ++ vars.randAngle]" category="com.mulesoft.training.serverinfo"/>
+    </flow>
+    <flow name="getLocation">
+        <http:listener doc:name="Listener" path="location" config-ref="HTTP_Listener_config"/>
+        <set-payload value="${location}" doc:name="Set Payload"/>
+        <logger level="DEBUG" doc:name="Logger" message="#['Location set to: ' ++ payload]" category="com.mulesoft.training.serverinfo"/>
+    </flow>
+    <flow name="help">
+        <http:listener doc:name="GET /" path="/" config-ref="HTTP_Listener_config">
+            <http:response statusCode="200">
+                <http:headers><![CDATA[#[output applicaton/java
+                ---
+                {
+                    "content-type" : "text/html"
+                }]]]></http:headers>
+            </http:response>
+        </http:listener>
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                output application/json
+                --- 
+                //startDate: app.muleContext.startDate as DateTime
+                
+                //(app.muleContext.startDate as DateTime) 
+                //as String {format : "dd-MMM-yy, hh:mm:ss"}
+                
+                {
+                    
+                    workerIp: server.ip
+                }
+                ]]></ee:set-payload>
+            </ee:message>
+            <ee:variables>
+                <ee:set-variable variableName="workerIp"><![CDATA[%dw 2.0
+                output application/json
+                ---
+                //startDate: app.muleContext.startDate as DateTime
+                
+                //(app.muleContext.startDate as DateTime) 
+                //as String {format : "dd-MMM-yy, hh:mm:ss"}
+                
+                {
+                    
+                    workerIp: server.ip
+                }
+                ]]></ee:set-variable>
+                <ee:set-variable variableName="help"><![CDATA[%dw 2.0
+                output application/java
+                ---
+                (readUrl("classpath://docroot/help.html","application/java") as String)
+                replace /(\n)/ with ""]]></ee:set-variable>
+                <ee:set-variable variableName="reload"><![CDATA[%dw 2.0
+                output application/json
+                ---
+                //read(write(readUrl("classpath://docroot/reload.html","application/java")),"application/json")
+                readUrl("classpath://docroot/reload.html","application/java" as String)
+                replace /(\n)/ with ""]]></ee:set-variable>
+                <ee:set-variable variableName="header"><![CDATA[%dw 2.0
+                output application/json
+                ---
+                readUrl("classpath://docroot/header.html","application/java" as String)
+                replace /(\n)/ with ""]]></ee:set-variable>
+                <ee:set-variable variableName="body"><![CDATA[%dw 2.0
+                output application/json
+                ---
+                (readUrl("classpath://docroot/body.html","application/java") as String)
+                replace /(\n)/ with ""
+                replace /(GPS_URL)/ with p('gps.url')]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                output application/java
+                ---
+                vars.header 
+                ++
+                vars.body
+                replace /(SERVER_IP)/ with (
+                    vars.workerIp.workerIp as String ++ "<br>" ++ randomInt(360) as String
+                )
+                ]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="getHostIp">
+        <http:listener doc:name="GET /hostip" path="hostip" config-ref="HTTP_Listener_config"/>
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                output application/java
+                ---
+                (server.ip as String)]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger level="DEBUG" doc:name="Logger" message="#[output application/json --- ' Mule runtime\'s IP address retrieved: ' ++ payload as String  ]" category="com.mulesoft.training.serverinfo"/>
+    </flow>
+    <flow name="getRandAngle">
+        <http:listener doc:name="GET /randAngle" path="randAngle" config-ref="HTTP_Listener_config">
+            <http:response statusCode="200">
+                <http:headers><![CDATA[#[output applicaton/java
+                ---
+                {
+                    "content-type" : "text/html"
+                }]]]></http:headers>
+            </http:response>
+        </http:listener>
+        <ee:transform doc:name="Generate random angle">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                output application/java
+                ---
+                randomInt(360) as String
+                ]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger level="DEBUG" doc:name="Logger" message="#[output application/json --- ' New random angle generated:  ' ++ payload as String  ]" category="com.mulesoft.training.serverinfo"/>
+    </flow>
+</mule>
