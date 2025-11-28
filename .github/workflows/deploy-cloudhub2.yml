@@ -113,6 +113,7 @@ jobs:
           ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID_DEV }}
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_DEV }}
         run: |
+          mvn install -DskipTests
           mvn deploy -DskipMuleDeploy
 
       - name: Deploy to CloudHub 2.0 DEV
@@ -162,6 +163,9 @@ jobs:
           path: target/
 
       - name: Configure Maven settings
+        env:
+          ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID_TEST }}
+          ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_TEST }}
         run: |
           mkdir -p ~/.m2
           cat > ~/.m2/settings.xml <<EOF
@@ -170,11 +174,24 @@ jobs:
               <server>
                 <id>anypoint-exchange-v3</id>
                 <username>~~~Client~~~</username>
-                <password>\${env.ANYPOINT_CLIENT_ID}~?~\${env.ANYPOINT_CLIENT_SECRET}</password>
+                <password>$ANYPOINT_CLIENT_ID~?~$ANYPOINT_CLIENT_SECRET</password>
+              </server>
+              <server>
+                <id>mulesoft-releases</id>
+                <username>~~~Client~~~</username>
+                <password>$ANYPOINT_CLIENT_ID~?~$ANYPOINT_CLIENT_SECRET</password>
               </server>
             </servers>
           </settings>
           EOF
+
+      - name: Publish to Exchange
+        env:
+          ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID_TEST }}
+          ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_TEST }}
+        run: |
+          mvn install -DskipTests
+          mvn deploy -DskipMuleDeploy
 
       - name: Deploy to CloudHub 2.0 TEST
         env:
@@ -223,6 +240,9 @@ jobs:
           path: target/
 
       - name: Configure Maven settings
+        env:
+          ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID_PROD }}
+          ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_PROD }}
         run: |
           mkdir -p ~/.m2
           cat > ~/.m2/settings.xml <<EOF
@@ -231,11 +251,24 @@ jobs:
               <server>
                 <id>anypoint-exchange-v3</id>
                 <username>~~~Client~~~</username>
-                <password>\${env.ANYPOINT_CLIENT_ID}~?~\${env.ANYPOINT_CLIENT_SECRET}</password>
+                <password>$ANYPOINT_CLIENT_ID~?~$ANYPOINT_CLIENT_SECRET</password>
+              </server>
+              <server>
+                <id>mulesoft-releases</id>
+                <username>~~~Client~~~</username>
+                <password>$ANYPOINT_CLIENT_ID~?~$ANYPOINT_CLIENT_SECRET</password>
               </server>
             </servers>
           </settings>
           EOF
+
+      - name: Publish to Exchange
+        env:
+          ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID_PROD }}
+          ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_PROD }}
+        run: |
+          mvn install -DskipTests
+          mvn deploy -DskipMuleDeploy
 
       - name: Deploy to CloudHub 2.0 PROD
         env:
