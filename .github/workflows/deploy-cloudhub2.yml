@@ -70,8 +70,7 @@ jobs:
           ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID_DEV }}
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_DEV }}
         run: |
-          mvn clean package -DskipTests
-          mvn deploy -DskipMuleDeploy
+          mvn clean deploy -DskipTests -DskipMuleDeploy
 
       - name: Deploy to CloudHub 2.0 DEV
         env:
