@@ -38,7 +38,6 @@
                     <classifier>mule-application</classifier>
                     <cloudHubDeployment>
                         <uri>https://anypoint.mulesoft.com</uri>
-                        <muleVersion>${app.runtime}</muleVersion>
                         <connectedAppClientId>${connectedApp.clientId}</connectedAppClientId>
                         <connectedAppClientSecret>${connectedApp.clientSecret}</connectedAppClientSecret>
                         <connectedAppGrantType>client_credentials</connectedAppGrantType>
