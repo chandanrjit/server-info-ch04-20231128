@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <app.runtime>4.10.1:12e</app.runtime>
+        <app.runtime>4.10.1</app.runtime>
         <mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -36,19 +36,22 @@
                 <extensions>true</extensions>
                 <configuration>
                     <classifier>mule-application</classifier>
-                    <cloudHubDeployment>
+                    <cloudhub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
-                        <connectedAppClientId>${connectedApp.clientId}</connectedAppClientId>
-                        <connectedAppClientSecret>${connectedApp.clientSecret}</connectedAppClientSecret>
-                        <connectedAppGrantType>client_credentials</connectedAppGrantType>
+                        <muleVersion>${app.runtime}</muleVersion>
+                        <username>${anypoint.platform.username}</username>
+                        <password>${anypoint.platform.password}</password>
                         <applicationName>${cloudhub.applicationName}</applicationName>
                         <environment>${cloudhub.environment}</environment>
-                        <region>${cloudhub.region}</region>
-                        <workers>${cloudhub.replicas}</workers>
-                        <workerType>${cloudhub.workerType}</workerType>
-                        <objectStoreV2>true</objectStoreV2>
+                        <target>${cloudhub.target}</target>
+                        <provider>${cloudhub.provider}</provider>
+                        <replicas>${cloudhub.replicas}</replicas>
+                        <vCores>${cloudhub.vCores}</vCores>
+                        <deploymentSettings>
+                            <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+                        </deploymentSettings>
                         <businessGroup>${cloudhub.businessGroup}</businessGroup>
-                    </cloudHubDeployment>
+                    </cloudhub2Deployment>
                 </configuration>
                 <dependencies>
                     <dependency>
