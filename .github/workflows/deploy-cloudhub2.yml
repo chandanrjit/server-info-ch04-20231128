@@ -84,7 +84,7 @@ jobs:
           CH2_TARGET: ${{ secrets.CH2_TARGET }}
         run: |
           mvn deploy -DmuleDeploy \
-            -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
+            -Dmule.artifact=target/server-info-1.7.5-mule-application.jar \
             -DconnectedApp.clientId=$ANYPOINT_CLIENT_ID \
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
             -Dcloudhub.environment=Sandbox \

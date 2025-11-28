@@ -7,7 +7,7 @@
     
     <groupId>d29ffee3-8e4b-4f13-bb0c-ea5ca175c2a9</groupId>
     <artifactId>server-info</artifactId>
-    <version>1.7.4</version>
+    <version>1.7.5</version>
     <packaging>mule-application</packaging>
     
     <name>Server Info Application</name>
