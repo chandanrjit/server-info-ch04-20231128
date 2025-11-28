@@ -71,7 +71,9 @@ jobs:
           ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET_DEV }}
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
         run: |
-          mvn clean deploy -DskipTests -DskipMuleDeploy -Danypoint.orgId=$ANYPOINT_ORG_ID
+          # Use business group org ID for Exchange publication
+          mvn clean deploy -DskipTests -DskipMuleDeploy \
+            -Danypoint.orgId=d29ffee3-8e4b-4f13-bb0c-ea5ca175c2a9
 
       - name: Deploy to CloudHub 2.0 DEV
         env:
