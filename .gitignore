@@ -1,0 +1,44 @@
+# Mule Application
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+logs/
+
+# Build files
+.mule/
+.munit/
+.studio/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Mac OS
+.DS_Store
+
+# Maven
+dependency-reduced-pom.xml
+
+# Mule runtime
+.repository/
+
+# Backup files
+*~
+*.bak
+*.swp
+*.tmp
+
+# Archive files
+*.zip
+*.tar.gz
+*.tgz
+*.rar

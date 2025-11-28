@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": false,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"**/.apivcs": false,
+			"**/.designer.json": false,
+			"**/.exchange.xml": false,
+			"**/.exchange_modules_tmp": false,
+			"**/.gitignore": false,
+			"**/.mvn": false,
+			"**/.settings": false,
+			"**/.tmp": false,
+			"**/.vscode": false,
+			".mule": true
+		}
+	}
+}

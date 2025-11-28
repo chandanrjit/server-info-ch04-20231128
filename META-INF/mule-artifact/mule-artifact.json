@@ -1,0 +1,39 @@
+{
+  "configs": [
+    "gpswalker.xml",
+    "serverinfo.xml"
+  ],
+  "secureProperties": [],
+  "supportedJavaVersions": [],
+  "redeploymentEnabled": true,
+  "name": "com.mulesoft.training.opscld:server-info:5.5.0",
+  "minMuleVersion": "4.3.0",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [
+        "utilities"
+      ],
+      "exportedResources": [
+        "application-types.xml",
+        "docroot/body.html",
+        "docroot/gpswalker.html",
+        "docroot/gpswalker2.html",
+        "docroot/header.html",
+        "docroot/help.html",
+        "docroot/index.html",
+        "docroot/reload.html",
+        "gpswalker.properties",
+        "gpswalker.xml",
+        "log4j2.xml",
+        "properties.yaml",
+        "serverinfo.xml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
