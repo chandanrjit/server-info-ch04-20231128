@@ -115,7 +115,7 @@ jobs:
             -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-dev \
             -Dcloudhub.target="Cloudhub-US-West-1" \
-            -Dcloudhub.replicas=1 \
+            -Dcloudhub.replicas=2 \
             -Dcloudhub.vCores=0.1 \
             -Dcloudhub.businessGroup="Cloud01Group04\\Cloud04Group04" \
             -DskipTests
