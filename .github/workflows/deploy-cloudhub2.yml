@@ -116,7 +116,7 @@ jobs:
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
             -DconnectedApp.clientId=$ANYPOINT_CLIENT_ID \
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
-            -Dcloudhub.environment=$ANYPOINT_ENV_ID \
+            -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-dev \
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
@@ -176,7 +176,7 @@ jobs:
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
             -DconnectedApp.clientId=$ANYPOINT_CLIENT_ID \
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
-            -Dcloudhub.environment=$ANYPOINT_ENV_ID \
+            -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-test \
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
@@ -236,7 +236,7 @@ jobs:
             -Dmule.artifact=target/server-info-1.7.4-mule-application.jar \
             -DconnectedApp.clientId=$ANYPOINT_CLIENT_ID \
             -DconnectedApp.clientSecret=$ANYPOINT_CLIENT_SECRET \
-            -Dcloudhub.environment=$ANYPOINT_ENV_ID \
+            -Dcloudhub.environment=Sandbox \
             -Dcloudhub.applicationName=server-info-demo-2 \
             -Dcloudhub.region=us-west-2 \
             -Dcloudhub.replicas=1 \
